@@ -1,0 +1,5 @@
+{
+    title = "Dim - Opacity Up";
+    description = "Turn Opacity Up";
+    "compatible-modes" = ("springboard", "lockscreen", "application");
+}
