@@ -12,16 +12,8 @@
 	return self;
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-	return nil;
-}
-
-// - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-//	 return NO;
-// }
-
 - (BOOL)_ignoresHitTest {
-	return NO;
+	return YES;
 }
 
 @end
