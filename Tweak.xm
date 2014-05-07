@@ -18,7 +18,7 @@ static void dimToggleOff(CFNotificationCenterRef center, void *observer, CFStrin
 // Toggles Dim on via FlipSwitch, adding it to the current window
 static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
     dimOverlay = [[DimWindow alloc] init];
-	dimOverlay.windowLevel = UIWindowLevelStatusBar;
+	dimOverlay.windowLevel = 1000001; //Beat that rpetrich
     dimOverlay.alpha = dimAlpha;
     dimOverlay.hidden = NO;
 
