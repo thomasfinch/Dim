@@ -40,12 +40,8 @@ static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFString
 }
 
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event {
-	if (!dimOverlayActive()) {	// If FlipSwitch isn't turned on...
-		UIAlertView *dimDisabled = [[UIAlertView alloc] initWithTitle:@"Dim" message:@"Enable Dim using the built-in FlipSwitch to adjust its opacity." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-		[dimDisabled show];
-		[dimDisabled release];
+	if (!dimOverlayActive())	// If FlipSwitch isn't turned on...
 		return;
-	}
 
 	else if (self.dimUp) {	// If initialized with dimUp = YES, make more opaque...
 		DimLog(@"Opacity (%f) up...", dimAlpha);
