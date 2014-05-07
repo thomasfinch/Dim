@@ -6,7 +6,7 @@ DEBUG = 1
 include theos/makefiles/common.mk
 
 TWEAK_NAME = Dim
-Dim_FILES = Tweak.xm
+Dim_FILES = Tweak.xm DimWindow.xm
 Dim_FRAMEWORKS = UIKit
 Dim_PRIVATE_FRAMEWORKS = GraphicsServices
 Dim_LIBRARIES = flipswitch activator

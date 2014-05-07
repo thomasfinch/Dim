@@ -1,24 +1,8 @@
-#import <GraphicsServices/GSEvent.h>
 #import <Flipswitch/Flipswitch.h>
 #import <libactivator/libactivator.h>
-#import <dlfcn.h>
+#import "DimWindow.h"
 
-#ifdef DEBUG
-	#define DimLog(fmt, ...) NSLog((@"[Dim] %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
-	#define DimLog(fmt, ...)
-#endif
-
-@interface UIWindow (Private)
-	// UIView *_exclusiveTouchView;
-+ (id)keyWindow;
-+ (id)allWindowsIncludingInternalWindows:(BOOL)arg1 onlyVisibleWindows:(BOOL)arg2;
-+ (id)allWindowsIncludingInternalWindows:(BOOL)arg1 onlyVisibleWindows:(BOOL)arg2 forScreen:(id)arg3;
-@end
-
-extern "C" GSEventType GSEventGetType(GSEventRef event);
-
-static UIWindow *dimOverlay;
+static DimWindow *dimOverlay;
 static CGFloat dimAlpha = 0.1;
 
 // Checks if Dim is current enabled via FlipSwitch
@@ -33,13 +17,13 @@ static void dimToggleOff(CFNotificationCenterRef center, void *observer, CFStrin
 
 // Toggles Dim on via FlipSwitch, adding it to the current window
 static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-    dimOverlay = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    dimOverlay.windowLevel = UIWindowLevelStatusBar;
-    dimOverlay.backgroundColor = [UIColor blackColor];
+    dimOverlay = [[DimWindow alloc] init];
+	dimOverlay.windowLevel = 100000.0f;
     dimOverlay.alpha = dimAlpha;
+	dimOverlay.hidden = NO;
 
 	DimLog(@"Adding Dim window %@ with alpha: %f", dimOverlay, dimAlpha);
-	[dimOverlay makeKeyAndVisible];
+	// [dimOverlay makeKeyAndVisible];
 }
 
 @interface DimListener : NSObject <LAListener>
@@ -88,19 +72,6 @@ static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFString
 @end
 
 %ctor {
-	/*NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *block) {
-		if (dimOverlayActive()) {
-			dimOverlay = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-			dimOverlay.backgroundColor = [UIColor blackColor];
-			dimOverlay.alpha = dimAlpha;
-			dimOverlay.windowLevel = 100000.0f;
-			dimOverlay.userInteractionEnabled = NO;
-			dimOverlay.hidden = NO;
-		}
-	}];
-	[pool drain];*/
-
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	[DimListener load];
