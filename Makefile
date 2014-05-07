@@ -1,7 +1,6 @@
 THEOS_PACKAGE_DIR_NAME = debs
 TARGET =: clang
 ARCHS = armv7 arm64
-DEBUG = 1
 
 include theos/makefiles/common.mk
 
