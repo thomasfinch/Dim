@@ -44,12 +44,10 @@ static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFString
 		return;
 
 	else if (self.dimUp) {	// If initialized with dimUp = YES, make more opaque...
-		DimLog(@"Opacity (%f) up...", dimAlpha);
 		dimAlpha = fmin(dimAlpha - 0.1, 1.0);
 	}
 
 	else {
-		DimLog(@"Opacity (%f) down...", dimAlpha);
 		dimAlpha = fmax(dimAlpha + 0.1, 0.0);
 	}
 
