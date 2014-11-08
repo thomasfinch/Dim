@@ -1,71 +1,93 @@
-#import <Flipswitch/Flipswitch.h>
 #import <libactivator/libactivator.h>
 #import "DimWindow.h"
 
+static BOOL enabled = NO;
+static CGFloat dimAlpha = 0.3, alphaInterval = 0.1;
 static DimWindow *dimOverlay;
-static CGFloat dimAlpha = 0.1;
 
-// Checks if Dim is current enabled via FlipSwitch
-static BOOL dimOverlayActive() {
-	return ([[FSSwitchPanel sharedPanel] stateForSwitchIdentifier:@"com.thomasfinch.dim"] == FSSwitchStateOn);
+void setEnabled(BOOL isEnabled) {
+	enabled = isEnabled;
+
+	if (enabled) {
+		dimOverlay = [[DimWindow alloc] init];
+		dimOverlay.windowLevel = 1000001; //Beat that ryan petrich
+	    dimOverlay.alpha = dimAlpha;
+	    dimOverlay.hidden = NO;
+	}
+	else
+		[dimOverlay release];
+
+
+	//Update settings
 }
 
-// Toggles Dim off via FlipSwitch, removing it from current window
-static void dimToggleOff(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo){
-	[dimOverlay release];
+void changeBrightness(BOOL brighter) {
+	if (brighter)
+		dimAlpha = fmin(dimAlpha - alphaInterval, 1.0);
+	else
+		dimAlpha = fmax(dimAlpha + alphaInterval, 0.0);
+
+	dimOverlay.alpha = dimAlpha;
+
+	//Update settings
 }
 
-// Toggles Dim on via FlipSwitch, adding it to the current window
-static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-    dimOverlay = [[DimWindow alloc] init];
-	dimOverlay.windowLevel = 1000001; //Beat that rpetrich
-    dimOverlay.alpha = dimAlpha;
-    dimOverlay.hidden = NO;
-
-	DimLog(@"Added Dim window %@ with alpha: %f", dimOverlay, dimAlpha);
+@interface DimListener : NSObject <LAListener> {
+	int mode;
 }
-
-@interface DimListener : NSObject <LAListener>
-@property(nonatomic, readwrite) BOOL dimUp;
-+ (DimListener *)listenerForUp:(BOOL)up;
+- (id)initWithMode:(int)inMode;
 @end
 
 @implementation DimListener
 
-// Initializes a new listener with "dimUp" property to control activation result
-+ (DimListener *)listenerForUp:(BOOL)up {
-	DimListener *listener = [self new];
-	listener.dimUp = up;
-	return listener;
+- (id)initWithMode:(int)inMode {
+	if (self = [super init]) {
+		mode = inMode;
+	}
+	return self;
 }
 
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event {
-	if (!dimOverlayActive())	// If FlipSwitch isn't turned on...
-		return;
-
-	else if (self.dimUp) {	// If initialized with dimUp = YES, make more opaque...
-		dimAlpha = fmin(dimAlpha - 0.1, 1.0);
-	}
-
-	else {
-		dimAlpha = fmax(dimAlpha + 0.1, 0.0);
-	}
-
-	dimOverlay.alpha = dimAlpha;
 	[event setHandled:YES]; // To prevent the default iOS implementation
-}
- 
-+ (void)load {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; // rpetrich-style
-	[LASharedActivator registerListener:[self listenerForUp:YES] forName:@"com.thomasfinch.dim-up"];
-	[LASharedActivator registerListener:[self listenerForUp:NO] forName:@"com.thomasfinch.dim-down"];
-	[pool drain];
+
+	switch (mode) {
+		case 0: //Brightness up
+			if (enabled)
+				changeBrightness(YES);
+			else
+				[event setHandled:NO];
+			break;
+		case 1: //Brightness down
+			if (enabled)
+				changeBrightness(NO);
+			else
+				[event setHandled:NO];
+			break;
+		case 2: //Enable
+			setEnabled(YES);
+			break;
+		case 3: //Disable
+			setEnabled(NO);
+			break;
+	}
 }
 
 @end
 
+static void dimToggleOff(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo){
+	setEnabled(NO);
+}
+
+static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+	setEnabled(YES);
+}
+
 %ctor {
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	[DimListener load];
+	
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:2] forName:@"com.thomasfinch.dim-on"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:3] forName:@"com.thomasfinch.dim-off"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:0] forName:@"com.thomasfinch.dim-up"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:1] forName:@"com.thomasfinch.dim-down"];
 }

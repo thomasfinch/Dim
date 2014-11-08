@@ -3,8 +3,7 @@
 
 extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 
-@interface DimSwitch : NSObject <FSSwitchDataSource>
-{
+@interface DimSwitch : NSObject <FSSwitchDataSource> {
     BOOL isOn;
 }
 
@@ -14,8 +13,7 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 
 - (id)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         isOn = NO;
     }
     return self;
@@ -25,9 +23,8 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
         return @"Dim";
 }
 
-- (FSSwitchState)stateForSwitchIdentifier:(NSString *)switchIdentifier
-{
-	return isOn ? FSSwitchStateOn : FSSwitchStateOff;
+- (FSSwitchState)stateForSwitchIdentifier:(NSString *)switchIdentifier {
+    return isOn ? FSSwitchStateOn : FSSwitchStateOff;
 }
 
 - (void)applyState:(FSSwitchState)newState forSwitchIdentifier:(NSString *)switchIdentifier

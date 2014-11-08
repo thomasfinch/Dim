@@ -1,0 +1,3 @@
+Dim To Do
+
+Add settings pane to turn on/off, set brightness change interval, turn brightness up/down (make activator not dependency)

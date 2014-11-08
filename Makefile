@@ -1,13 +1,13 @@
-THEOS_PACKAGE_DIR_NAME = debs
+ARCHS = armv7 armv7s arm64
 TARGET =: clang
-ARCHS = armv7 arm64
+THEOS_PACKAGE_DIR_NAME = debs
 THEOS_DEVICE_IP = localhost
 THEOS_DEVICE_PORT = 2222
 
 include theos/makefiles/common.mk
 
 TWEAK_NAME = Dim
-Dim_FILES = Tweak.xm DimWindow.xm
+Dim_FILES = Tweak.xm DimWindow.m
 Dim_FRAMEWORKS = UIKit
 Dim_PRIVATE_FRAMEWORKS = GraphicsServices
 Dim_LIBRARIES = flipswitch activator
