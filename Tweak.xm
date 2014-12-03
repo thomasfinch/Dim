@@ -1,46 +1,24 @@
 #import <libactivator/libactivator.h>
-#import "DimWindow.h"
+#import "DimController.h"
 
-static BOOL enabled = NO;
-static CGFloat dimAlpha = 0.3, alphaInterval = 0.1;
-static DimWindow *dimOverlay;
+typedef enum {
+    kBrightnessUp,
+    kBrightnessDown,
+    kEnable,
+    kDisable
+} DimActivatorMode;
 
-void setEnabled(BOOL isEnabled) {
-	enabled = isEnabled;
-
-	if (enabled) {
-		dimOverlay = [[DimWindow alloc] init];
-		dimOverlay.windowLevel = 1000001; //Beat that ryan petrich
-	    dimOverlay.alpha = dimAlpha;
-	    dimOverlay.hidden = NO;
-	}
-	else
-		[dimOverlay release];
-
-
-	//Update settings
-}
-
-void changeBrightness(BOOL brighter) {
-	if (brighter)
-		dimAlpha = fmin(dimAlpha - alphaInterval, 1.0);
-	else
-		dimAlpha = fmax(dimAlpha + alphaInterval, 0.0);
-
-	dimOverlay.alpha = dimAlpha;
-
-	//Update settings
-}
-
+//Listens for activator events.
+//One is created for each of the four possible events (on, off, brightness up, brightness down)
 @interface DimListener : NSObject <LAListener> {
-	int mode;
+	DimActivatorMode mode;
 }
-- (id)initWithMode:(int)inMode;
+- (id)initWithMode:(DimActivatorMode)inMode;
 @end
 
 @implementation DimListener
 
-- (id)initWithMode:(int)inMode {
+- (id)initWithMode:(DimActivatorMode)inMode {
 	if (self = [super init]) {
 		mode = inMode;
 	}
@@ -51,43 +29,56 @@ void changeBrightness(BOOL brighter) {
 	[event setHandled:YES]; // To prevent the default iOS implementation
 
 	switch (mode) {
-		case 0: //Brightness up
-			if (enabled)
-				changeBrightness(YES);
+		case kBrightnessUp:
+			if ([DimController sharedInstance].enabled)
+				[[DimController sharedInstance] setBrightness:[DimController sharedInstance].brightness - [DimController sharedInstance].alphaInterval];
 			else
 				[event setHandled:NO];
 			break;
-		case 1: //Brightness down
-			if (enabled)
-				changeBrightness(NO);
+		case kBrightnessDown:
+			if ([DimController sharedInstance].enabled)
+				[[DimController sharedInstance] setBrightness:[DimController sharedInstance].brightness + [DimController sharedInstance].alphaInterval];
 			else
 				[event setHandled:NO];
 			break;
-		case 2: //Enable
-			setEnabled(YES);
+		case kEnable:
+			[[DimController sharedInstance] setEnabled:YES];
 			break;
-		case 3: //Disable
-			setEnabled(NO);
+		case kDisable:
+			[[DimController sharedInstance] setEnabled:NO];
 			break;
 	}
 }
 
 @end
 
-static void dimToggleOff(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo){
-	setEnabled(NO);
+//Called when any preference is changed in the settings app
+void prefsChanged() {
+	[DimController sharedInstance].prefsChangedFromSettings = YES;
+    [[DimController sharedInstance] updateSettings];
 }
 
-static void dimToggleOn(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	setEnabled(YES);
+//Called by the flipswitch toggle
+void dimToggleOff(){
+	[[DimController sharedInstance] setEnabled:NO];
+}
+
+//Called by the flipswitch toggle
+void dimToggleOn() {
+	[[DimController sharedInstance] setEnabled:YES];
 }
 
 %ctor {
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL,CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+
+	[DimController sharedInstance]; //Initialize dim controller
 	
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:2] forName:@"com.thomasfinch.dim-on"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:3] forName:@"com.thomasfinch.dim-off"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:0] forName:@"com.thomasfinch.dim-up"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:1] forName:@"com.thomasfinch.dim-down"];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kEnable] forName:@"com.thomasfinch.dim-on"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kDisable] forName:@"com.thomasfinch.dim-off"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessUp] forName:@"com.thomasfinch.dim-up"];
+	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessDown] forName:@"com.thomasfinch.dim-down"];
+	[pool drain];
 }

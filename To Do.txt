@@ -1,3 +1,4 @@
 Dim To Do
 
 Add settings pane to turn on/off, set brightness change interval, turn brightness up/down (make activator not dependency)
+Add setting to turn off automatically after X hours

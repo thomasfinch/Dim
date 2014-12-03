@@ -7,13 +7,14 @@ THEOS_DEVICE_PORT = 2222
 include theos/makefiles/common.mk
 
 TWEAK_NAME = Dim
-Dim_FILES = Tweak.xm DimWindow.m
+Dim_FILES = Tweak.xm DimWindow.m DimController.m
 Dim_FRAMEWORKS = UIKit
 Dim_PRIVATE_FRAMEWORKS = GraphicsServices
 Dim_LIBRARIES = flipswitch activator
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += switch
+SUBPROJECTS += preferences
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
 after-install::

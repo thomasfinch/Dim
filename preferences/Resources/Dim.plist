@@ -1,0 +1,100 @@
+title = "Dim";
+items = (
+  {
+    cell = PSGroupCell;
+  },
+  {
+    cell = PSSwitchCell;
+    default = 1;
+    defaults = "com.thomasfinch.dim";
+    key = enabled;
+    PostNotification = com.thomasfinch.dim-prefschanged;
+    label = "Enabled";
+  },
+  {
+    cell = PSGroupCell;
+    label = "Brightness";
+  },
+  {
+    cell = PSSliderCell;
+    default = 0.3;
+    defaults = "com.thomasfinch.dim";
+    key = alpha;
+    PostNotification = com.thomasfinch.dim-prefschanged;
+    max = 1;
+    min = 0;
+    showValue = true;
+    leftImage = Brightness.png;
+  },
+  {
+    cell = PSGroupCell;
+    label = "Acivator Actions";
+    footerText = "Activator actions may be used to enable/disable Dim and change the brightness. Brightness change interval is the amount the brightness changes with the brightness up/down actions. Dim can also be enabled and disabled with the included Flipswitch toggle.";
+  },
+  {
+    cell = PSLinkListCell;
+    label = "Enable";
+    isController = true;
+    bundle = LibActivator;
+    activatorListener = com.thomasfinch.dim-on;
+  },
+  {
+    cell = PSLinkListCell;
+    label = "Disable";
+    isController = true;
+    bundle = LibActivator;
+    activatorListener = com.thomasfinch.dim-off;
+  },
+  {
+    cell = PSLinkListCell;
+    label = "Brightness Up";
+    isController = true;
+    bundle = LibActivator;
+    activatorListener = com.thomasfinch.dim-up;
+  },
+  {
+    cell = PSLinkListCell;
+    label = "Brightness Down";
+    isController = true;
+    bundle = LibActivator;
+    activatorListener = com.thomasfinch.dim-down;
+  },
+  {
+    cell = PSLinkListCell;
+    detail = PSListItemsController;
+    default = 0.1;
+    defaults = "com.thomasfinch.dim";
+    key = alphaInterval;
+    PostNotification = com.thomasfinch.dim-prefschanged;
+    label = "Brightness Change Interval";
+    validValues = (
+      0.05,
+      0.1,
+      0.2,
+    );
+    validTitles = (
+      "0.05",
+      "0.1",
+      "0.2",
+    );
+  },
+  {
+    cell = PSGroupCell;
+  },
+  {
+    cell = PSButtonCell;
+    action = GithubButtonTapped;
+    icon = "Github.png";
+    label = "View Source on GitHub";
+  },
+  {
+    cell = PSButtonCell;
+    action = TFTwitterButtonTapped;
+    icon = "Twitter.png";
+    label = "Developed by @tomf64";
+  },
+  {
+    cell = PSGroupCell;
+    footerText = "© 2014 Thomas Finch";
+  }
+);
