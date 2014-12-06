@@ -75,6 +75,7 @@ void dimToggleOn() {
 
 	[DimController sharedInstance]; //Initialize dim controller
 	
+	//Create all four activator listeners
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kEnable] forName:@"com.thomasfinch.dim-on"];
 	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kDisable] forName:@"com.thomasfinch.dim-off"];

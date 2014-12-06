@@ -2,6 +2,7 @@
 
 const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max darkness
 
+//DimController handles changes in brightness and enabled-ness. It updates the settings if needed when those change.
 @implementation DimController
 + (DimController*)sharedInstance {
 	static dispatch_once_t p = 0;
@@ -20,7 +21,7 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 			@"alpha": [NSNumber numberWithFloat:0.3],
 			@"alphaInterval": [NSNumber numberWithFloat:0.1]
 		}];
-		[prefs setBool:NO forKey:@"enabled"];
+		[prefs setBool:NO forKey:@"enabled"]; //Default to disabled when SpringBoard starts, regardless of the previous setting
 
 		_prefsChangedFromSettings = NO;
 		_enabled = NO;
@@ -34,6 +35,7 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 	[self setEnabled:[prefs boolForKey:@"enabled"]];
 	[self setBrightness:(1 - [prefs floatForKey:@"alpha"])];
 	_alphaInterval = [prefs floatForKey:@"alphaInterval"];
+	_prefsChangedFromSettings = NO;
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -52,10 +54,10 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 
 	if (!_prefsChangedFromSettings)
 		[prefs setBool:_enabled forKey:@"enabled"];
-	_prefsChangedFromSettings = NO;
 }
 
 - (void)setBrightness:(CGFloat)brightness {
+	//Ensures the brighntess is between 0 and MAX_ALPHA
 	CGFloat newBrightness = fmax(brightness, 0.0);
 	newBrightness = fmin(newBrightness, MAX_ALPHA);
 	_brightness = newBrightness;
@@ -65,7 +67,6 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 
 	if (!_prefsChangedFromSettings)
 		[prefs setFloat:(1 - _brightness) forKey:@"alpha"];
-	_prefsChangedFromSettings = NO;
 }
 
 @end
