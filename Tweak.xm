@@ -1,53 +1,48 @@
 #import <libactivator/libactivator.h>
 #import "DimController.h"
 
-typedef enum {
-    kBrightnessUp,
-    kBrightnessDown,
-    kEnable,
-    kDisable
-} DimActivatorMode;
-
-//Listens for activator events.
-//One is created for each of the four possible events (on, off, brightness up, brightness down)
-@interface DimListener : NSObject <LAListener> {
-	DimActivatorMode mode;
-}
-- (id)initWithMode:(DimActivatorMode)inMode;
+//Listens for activator events, and shows the control panel when it recieves one
+@interface DimListener : NSObject <LAListener>
 @end
 
 @implementation DimListener
 
-- (id)initWithMode:(DimActivatorMode)inMode {
-	if (self = [super init]) {
-		mode = inMode;
-	}
-	return self;
-}
-
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event {
 	[event setHandled:YES]; // To prevent the default iOS implementation
 
-	switch (mode) {
-		case kBrightnessUp:
-			if ([DimController sharedInstance].enabled)
-				[[DimController sharedInstance] setBrightness:[DimController sharedInstance].brightness - [DimController sharedInstance].alphaInterval];
-			else
-				[event setHandled:NO];
-			break;
-		case kBrightnessDown:
-			if ([DimController sharedInstance].enabled)
-				[[DimController sharedInstance] setBrightness:[DimController sharedInstance].brightness + [DimController sharedInstance].alphaInterval];
-			else
-				[event setHandled:NO];
-			break;
-		case kEnable:
-			[[DimController sharedInstance] setEnabled:YES];
-			break;
-		case kDisable:
-			[[DimController sharedInstance] setEnabled:NO];
-			break;
-	}
+	//Show the control panel
+	UIAlertView *controlPanel = [[UIAlertView alloc] initWithTitle:@"Dim Control Panel" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 100)];
+	[controlPanel setValue:containerView forKey:@"accessoryView"];
+
+	UILabel *enabledLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 15, containerView.frame.size.width, 20)];
+	enabledLabel.text = @"Enabled";
+	enabledLabel.font = [UIFont systemFontOfSize:16];
+	[containerView addSubview:enabledLabel];
+
+	UISwitch *enabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(155, 10, 30, 20)];
+	enabledSwitch.on = [DimController sharedInstance].enabled;
+	[enabledSwitch addTarget:self action:@selector(controlPanelSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+	[containerView addSubview:enabledSwitch];
+
+
+	UISlider *brightnessSlider = [[UISlider alloc] initWithFrame:CGRectMake(15, 65, containerView.frame.size.width-30, 30)];
+	brightnessSlider.minimumValue = 0.0;
+	brightnessSlider.maximumValue = 1.0;
+	brightnessSlider.minimumValueImage = [UIImage imageNamed:@"Brightness.png" inBundle:[NSBundle bundleWithPath:@"/Library/PreferenceBundles/Dim.bundle"] compatibleWithTraitCollection:nil];
+	brightnessSlider.value = 1 - [DimController sharedInstance].brightness;
+	[brightnessSlider addTarget:self action:@selector(controlPanelSliderChanged:) forControlEvents:UIControlEventValueChanged];
+	[containerView addSubview:brightnessSlider];
+
+	[controlPanel show];
+}
+
+- (void)controlPanelSwitchChanged:(UISwitch*)enabledSwitch {
+	[[DimController sharedInstance] setEnabled:enabledSwitch.on];
+}
+
+- (void)controlPanelSliderChanged:(UISlider*)slider {
+	[[DimController sharedInstance] setBrightness:1-slider.value];
 }
 
 @end
@@ -75,11 +70,8 @@ void dimToggleOn() {
 
 	[DimController sharedInstance]; //Initialize dim controller
 	
-	//Create all four activator listeners
+	//Create the activator listener
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kEnable] forName:@"com.thomasfinch.dim-on"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kDisable] forName:@"com.thomasfinch.dim-off"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessUp] forName:@"com.thomasfinch.dim-up"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessDown] forName:@"com.thomasfinch.dim-down"];
+	[LASharedActivator registerListener:[[DimListener alloc] init] forName:@"com.thomasfinch.dim-controlPanel"];
 	[pool drain];
 }

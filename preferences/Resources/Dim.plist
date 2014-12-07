@@ -28,55 +28,15 @@ items = (
   },
   {
     cell = PSGroupCell;
-    label = "Acivator Actions";
-    footerText = "Activator actions may be used to enable/disable Dim and change the brightness. Brightness change interval is the amount the brightness changes with the brightness up/down actions. Dim can also be enabled and disabled with the included Flipswitch toggle.";
+    label = "Acivator Action";
+    footerText = "Activator may optionally be used to show the Dim control panel. The control panel allows you to quickly enable/disable Dim and change the brightness. Dim can also be enabled and disabled with the included Flipswitch toggle.";
   },
   {
     cell = PSLinkListCell;
-    label = "Enable";
+    label = "Show Control Panel";
     isController = true;
     bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-on;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "Disable";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-off;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "Brightness Up";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-up;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "Brightness Down";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-down;
-  },
-  {
-    cell = PSLinkListCell;
-    detail = PSListItemsController;
-    default = 0.1;
-    defaults = "com.thomasfinch.dim";
-    key = alphaInterval;
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    label = "Brightness Change Interval";
-    validValues = (
-      0.05,
-      0.1,
-      0.2,
-    );
-    validTitles = (
-      "0.05",
-      "0.1",
-      "0.2",
-    );
+    activatorListener = com.thomasfinch.dim-controlPanel;
   },
   {
     cell = PSGroupCell;

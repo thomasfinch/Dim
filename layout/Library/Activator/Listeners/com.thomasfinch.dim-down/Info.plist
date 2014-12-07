@@ -1,6 +1,0 @@
-{
-	group = "Dim";
-    title = "Dim - Brightness Down";
-    description = "Turn Brightness Down";
-    "compatible-modes" = ("springboard", "lockscreen", "application");
-}

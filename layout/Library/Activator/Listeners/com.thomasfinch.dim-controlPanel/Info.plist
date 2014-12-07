@@ -1,0 +1,6 @@
+{
+	group = "Dim";
+    title = "Dim - Show Control Panel";
+    description = "Show Panel to Enable or Change Brightness";
+    "compatible-modes" = ("springboard", "lockscreen", "application");
+}
