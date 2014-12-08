@@ -69,4 +69,40 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 		[prefs setFloat:(1 - _brightness) forKey:@"alpha"];
 }
 
+- (void)showControlPanel {
+	//Show the control panel
+	UIAlertView *controlPanel = [[UIAlertView alloc] initWithTitle:@"Dim Control Panel" message:nil delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil];
+	UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 100)];
+	[controlPanel setValue:containerView forKey:@"accessoryView"];
+
+	UILabel *enabledLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 15, containerView.frame.size.width, 20)];
+	enabledLabel.text = @"Enabled";
+	enabledLabel.font = [UIFont systemFontOfSize:16];
+	[containerView addSubview:enabledLabel];
+
+	UISwitch *enabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(155, 10, 30, 20)];
+	enabledSwitch.on = [DimController sharedInstance].enabled;
+	[enabledSwitch addTarget:self action:@selector(controlPanelSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+	[containerView addSubview:enabledSwitch];
+
+
+	UISlider *brightnessSlider = [[UISlider alloc] initWithFrame:CGRectMake(15, 65, containerView.frame.size.width-30, 30)];
+	brightnessSlider.minimumValue = 0.0;
+	brightnessSlider.maximumValue = 1.0;
+	brightnessSlider.minimumValueImage = [UIImage imageNamed:@"Brightness.png" inBundle:[NSBundle bundleWithPath:@"/Library/PreferenceBundles/Dim.bundle"] compatibleWithTraitCollection:nil];
+	brightnessSlider.value = 1 - [DimController sharedInstance].brightness;
+	[brightnessSlider addTarget:self action:@selector(controlPanelSliderChanged:) forControlEvents:UIControlEventValueChanged];
+	[containerView addSubview:brightnessSlider];
+
+	[controlPanel show];
+}
+
+- (void)controlPanelSwitchChanged:(UISwitch*)enableSwitch {
+	[self setEnabled:enableSwitch.on];
+}
+
+- (void)controlPanelSliderChanged:(UISlider*)slider {
+	[self setBrightness:1-slider.value];
+}
+
 @end

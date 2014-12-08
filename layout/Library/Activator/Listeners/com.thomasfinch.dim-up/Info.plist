@@ -1,0 +1,6 @@
+{
+	group = "Dim";
+    title = "Dim - Brightness Up";
+    description = "Turn brightness up";
+    "compatible-modes" = ("springboard", "lockscreen", "application");
+}

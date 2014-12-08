@@ -29,4 +29,9 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
     }
 }
 
+//Show the control panel when the toggle is held
+- (void)applyAlternateActionForSwitchIdentifier:(NSString *)switchIdentifier {
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-controlPanel"), NULL, NULL, true);
+}
+
 @end

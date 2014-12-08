@@ -14,5 +14,6 @@
 - (void)updateSettings;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setBrightness:(CGFloat)brightness;
+- (void)showControlPanel;
 
 @end

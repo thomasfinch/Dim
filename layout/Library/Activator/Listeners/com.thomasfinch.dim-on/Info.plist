@@ -1,0 +1,6 @@
+{
+	group = "Dim";
+    title = "Dim - Enable";
+    description = "Turn Dim on";
+    "compatible-modes" = ("springboard", "lockscreen", "application");
+}
