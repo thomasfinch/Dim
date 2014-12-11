@@ -1,0 +1,12 @@
+"ENABLED" = "활성화";
+"BRIGHTNESS" = "밝기";
+"ACTIVATOR_ACTIONS" = "Activator Actions";
+"ACTIVATOR_FOOTER" = "제어 패널은 빠르게 Dim을 활성화/비활성화하여 밝기를 조절할 수 있게 해줍니다. 밝기 변화 차이는 밝기를 높이고 낮출 때 변하는 양을 나타냅니다. Dim은 또한 Flipswitch Toggle을 이용해서 키고 끌 수 있습니다.";
+"SHOW_CONTROL_PANEL" = "제어 패널 보이기";
+"ENABLE" = "활성화";
+"DISABLE" = "비활성화";
+"BRIGHTNESS_UP" = "밝기 높이기";
+"BRIGHTNESS_DOWN" = "밝기 낮추기";
+"BRIGHTNESS_CHANGE_INTERVAL" = "밝기 변화 차이";
+"VIEW_ON_GITHUB" = "Github에서 소스 보기";
+"DEVELOPED_BY" = "Developed by @tomf64";

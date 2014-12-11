@@ -9,11 +9,11 @@ items = (
     defaults = "com.thomasfinch.dim";
     key = enabled;
     PostNotification = com.thomasfinch.dim-prefschanged;
-    label = "Enabled";
+    label = "ENABLED";
   },
   {
     cell = PSGroupCell;
-    label = "Brightness";
+    label = "BRIGHTNESS";
   },
   {
     cell = PSSliderCell;
@@ -28,40 +28,40 @@ items = (
   },
   {
     cell = PSGroupCell;
-    label = "Acivator Action";
-    footerText = "The control panel allows you to quickly enable/disable Dim and change the brightness. Brightness change interval is the amount the brightness changes with the brightness up/down actions. Dim can also be enabled and disabled with the included Flipswitch toggle.";
+    label = "ACTIVATOR_ACTIONS";
+    footerText = "ACTIVATOR_FOOTER";
   },
   {
     cell = PSLinkListCell;
-    label = "Show Control Panel";
+    label = "SHOW_CONTROL_PANEL";
     isController = true;
     bundle = LibActivator;
     activatorListener = com.thomasfinch.dim-controlPanel;
   },
   {
     cell = PSLinkListCell;
-    label = "Enable";
+    label = "ENABLE";
     isController = true;
     bundle = LibActivator;
     activatorListener = com.thomasfinch.dim-on;
   },
   {
     cell = PSLinkListCell;
-    label = "Disable";
+    label = "DISABLE";
     isController = true;
     bundle = LibActivator;
     activatorListener = com.thomasfinch.dim-off;
   },
   {
     cell = PSLinkListCell;
-    label = "Brightness Up";
+    label = "BRIGHTNESS_UP";
     isController = true;
     bundle = LibActivator;
     activatorListener = com.thomasfinch.dim-up;
   },
   {
     cell = PSLinkListCell;
-    label = "Brightness Down";
+    label = "BRIGHTNESS_DOWN";
     isController = true;
     bundle = LibActivator;
     activatorListener = com.thomasfinch.dim-down;
@@ -73,7 +73,7 @@ items = (
     defaults = "com.thomasfinch.dim";
     key = alphaInterval;
     PostNotification = com.thomasfinch.dim-prefschanged;
-    label = "Brightness Change Interval";
+    label = "BRIGHTNESS_CHANGE_INTERVAL";
     validValues = (
       0.05,
       0.1,
@@ -92,13 +92,13 @@ items = (
     cell = PSButtonCell;
     action = GithubButtonTapped;
     icon = "Github.png";
-    label = "View Source on GitHub";
+    label = "VIEW_ON_GITHUB";
   },
   {
     cell = PSButtonCell;
     action = TFTwitterButtonTapped;
     icon = "Twitter.png";
-    label = "Developed by @tomf64";
+    label = "DEVELOPED_BY";
   },
   {
     cell = PSGroupCell;

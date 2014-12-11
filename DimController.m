@@ -89,7 +89,7 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 	UISlider *brightnessSlider = [[UISlider alloc] initWithFrame:CGRectMake(15, 65, containerView.frame.size.width-30, 30)];
 	brightnessSlider.minimumValue = 0.0;
 	brightnessSlider.maximumValue = 1.0;
-	brightnessSlider.minimumValueImage = [UIImage imageNamed:@"Brightness.png" inBundle:[NSBundle bundleWithPath:@"/Library/PreferenceBundles/Dim.bundle"] compatibleWithTraitCollection:nil];
+	brightnessSlider.minimumValueImage = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/Dim.bundle/Brightness.png"];
 	brightnessSlider.value = 1 - [DimController sharedInstance].brightness;
 	[brightnessSlider addTarget:self action:@selector(controlPanelSliderChanged:) forControlEvents:UIControlEventValueChanged];
 	[containerView addSubview:brightnessSlider];
