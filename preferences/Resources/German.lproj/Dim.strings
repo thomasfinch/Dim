@@ -1,0 +1,12 @@
+"ENABLED" = "Aktiviert";
+"BRIGHTNESS" = "Helligkeit";
+"ACTIVATOR_ACTIONS" = "Acivator Aktionen";
+"ACTIVATOR_FOOTER" = "Im Einstellungsmenü kann Dim schnell aktiviert/deaktiviert als auch die Helligkeit verändert werden. Helligkeitsintervall beschreibt die Größe der Veränderung der Helligkeit mit den Helligkeit hoch/runter Aktionen. Dim kann auch über den enthaltenen Flipswitch Schalter (de)aktiviert werden.";
+"SHOW_CONTROL_PANEL" = "Zeige Einstellungsmenü";
+"ENABLE" = "Aktivieren";
+"DISABLE" = "Deaktivieren";
+"BRIGHTNESS_UP" = "Helligkeit hoch";
+"BRIGHTNESS_DOWN" = "Helligkeit runter";
+"BRIGHTNESS_CHANGE_INTERVAL" = "Helligkeitsintervall";
+"VIEW_ON_GITHUB" = "Sourcecode auf GitHub ansehen";
+"DEVELOPED_BY" = "Entwickelt von @tomf64";
