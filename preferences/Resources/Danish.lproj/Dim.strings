@@ -1,0 +1,12 @@
+"ENABLED" = "Aktiveret";
+"BRIGHTNESS" = "Lysstyrke";
+"ACTIVATOR_ACTIONS" = "Activator handlinger";
+"ACTIVATOR_FOOTER" = "Kontrolpanelet tillader dig hurtigt at aktivere og deaktivre Dim, samt at ændre lysstyrken. Ved at ændre Lysstyrke intervallet, ændre du hvor meget lysstyrken bliver ændret med ved hver gang op/ned handlingerne bliver aktiveret. Dim kan også blive slået til og fra, via den medfølgende Flipswitch kontakt.";
+"SHOW_CONTROL_PANEL" = "Vis Kontrolpanel";
+"ENABLE" = "Aktiver";
+"DISABLE" = "Deaktiver";
+"BRIGHTNESS_UP" = "Lysstyrke Op";
+"BRIGHTNESS_DOWN" = "Lysstyrke Ned";
+"BRIGHTNESS_CHANGE_INTERVAL" = "Lysstyrke interval";
+"VIEW_ON_GITHUB" = "Se kildekode på GitHub";
+"DEVELOPED_BY" = "Udviklet af @tomf64";
