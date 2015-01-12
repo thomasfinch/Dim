@@ -1,0 +1,12 @@
+"ENABLED" = "فعال شد";
+"BRIGHTNESS" = "روشنایی";
+"ACTIVATOR_ACTIONS" = "عملکرد Activator";
+"ACTIVATOR_FOOTER" = "پنل تنظیمات شما را قادر به فعال/غیر فعال کردن سریعDim  و تغییر روشنایی می کند. میزان تغییر نشان دهنده ی مقدار تغییرات روشنایی با عملکرد های اضافه/کم کردن است. علاوه بر این Dim را می توان با کلید Flipswitch ارائه شده فعال/غیر فعال کرد.";
+"SHOW_CONTROL_PANEL" = "نمایش پنل تنظیمات";
+"ENABLE" = "فعال سازی";
+"DISABLE" = "غیرفعال سازی";
+"BRIGHTNESS_UP" = "افزایش روشنایی";
+"BRIGHTNESS_DOWN" = "کاهش روشنایی";
+"BRIGHTNESS_CHANGE_INTERVAL" = "میزان تغییر روشنایی";
+"VIEW_ON_GITHUB" = "نمایش منبع در GitHub";
+"DEVELOPED_BY" = "توسعه یافته به دست @tomf64";

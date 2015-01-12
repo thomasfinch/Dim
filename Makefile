@@ -1,8 +1,6 @@
 ARCHS = armv7 armv7s arm64
 TARGET =: clang
 THEOS_PACKAGE_DIR_NAME = debs
-THEOS_DEVICE_IP = localhost
-THEOS_DEVICE_PORT = 2222
 
 include theos/makefiles/common.mk
 
