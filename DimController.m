@@ -24,7 +24,7 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 		[prefs setBool:NO forKey:@"enabled"]; //Default to disabled when SpringBoard starts, regardless of the previous setting
 
 		_prefsChangedFromSettings = NO;
-		_enabled = NO;
+		_enabled = [prefs boolForKey:@"enabled"];
 		_brightness = [prefs floatForKey:@"alpha"];
 		_alphaInterval = [prefs floatForKey:@"alphaInterval"];
 	}

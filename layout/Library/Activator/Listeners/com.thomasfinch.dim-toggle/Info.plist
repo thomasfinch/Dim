@@ -1,0 +1,6 @@
+{
+	group = "Dim";
+    title = "Dim - Toggle";
+    description = "Toggle Dim On or Off";
+    "compatible-modes" = ("springboard", "lockscreen", "application");
+}

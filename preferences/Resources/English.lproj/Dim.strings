@@ -5,6 +5,7 @@
 "SHOW_CONTROL_PANEL" = "Show Control Panel";
 "ENABLE" = "Enable";
 "DISABLE" = "Disable";
+"TOGGLE" = "Toggle On/Off";
 "BRIGHTNESS_UP" = "Brightness Up";
 "BRIGHTNESS_DOWN" = "Brightness Down";
 "BRIGHTNESS_CHANGE_INTERVAL" = "Brightness Change Interval";

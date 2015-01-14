@@ -1,3 +1,1 @@
-Add option to preserve enabled/disabled across respring & reboot
-Add activator action to toggle enable/disable
-Remove activator dependency
+Fix flipswitch not always reflecting enabled status (Should work idk why not? Maybe track state as bool in switch, use darwin notification callback when enabled changes to change it)

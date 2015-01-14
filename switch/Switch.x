@@ -1,4 +1,5 @@
 #import <Flipswitch/Flipswitch.h>
+#import <objc/runtime.h>
 
 extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 
@@ -12,7 +13,7 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 }
 
 - (FSSwitchState)stateForSwitchIdentifier:(NSString *)switchIdentifier {
-    return [[[NSUserDefaults alloc] initWithSuiteName:@"com.thomasfinch.dim"] boolForKey:@"enabled"] ? FSSwitchStateOn : FSSwitchStateOff;
+    return [[objc_getClass("DimController") performSelector:@selector(sharedInstance)] performSelector:@selector(enabled)] ? FSSwitchStateOn : FSSwitchStateOff;
 }
 
 - (void)applyState:(FSSwitchState)newState forSwitchIdentifier:(NSString *)switchIdentifier

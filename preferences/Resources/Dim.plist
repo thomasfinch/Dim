@@ -5,10 +5,10 @@ items = (
   },
   {
     cell = PSSwitchCell;
+    PostNotification = com.thomasfinch.dim-prefschanged;
     default = 1;
     defaults = "com.thomasfinch.dim";
     key = enabled;
-    PostNotification = com.thomasfinch.dim-prefschanged;
     label = "ENABLED";
   },
   {
@@ -17,10 +17,10 @@ items = (
   },
   {
     cell = PSSliderCell;
+    PostNotification = com.thomasfinch.dim-prefschanged;
     default = 0.3;
     defaults = "com.thomasfinch.dim";
     key = alpha;
-    PostNotification = com.thomasfinch.dim-prefschanged;
     max = 1;
     min = 0;
     showValue = true;
@@ -54,6 +54,13 @@ items = (
   },
   {
     cell = PSLinkListCell;
+    label = "TOGGLE";
+    isController = true;
+    bundle = LibActivator;
+    activatorListener = com.thomasfinch.dim-toggle;
+  },
+  {
+    cell = PSLinkListCell;
     label = "BRIGHTNESS_UP";
     isController = true;
     bundle = LibActivator;
@@ -68,11 +75,11 @@ items = (
   },
   {
     cell = PSLinkListCell;
+    PostNotification = com.thomasfinch.dim-prefschanged;
     detail = PSListItemsController;
     default = 0.1;
     defaults = "com.thomasfinch.dim";
     key = alphaInterval;
-    PostNotification = com.thomasfinch.dim-prefschanged;
     label = "BRIGHTNESS_CHANGE_INTERVAL";
     validValues = (
       0.05,

@@ -1,4 +1,6 @@
 #import <libactivator/libactivator.h>
+#include <dlfcn.h>
+#import <objc/runtime.h>
 #import "DimController.h"
 
 typedef enum {
@@ -6,11 +8,12 @@ typedef enum {
     kBrightnessDown,
     kEnable,
     kDisable,
+    kToggle,
     kControlPanel
 } DimActivatorMode;
 
 //Listens for activator events.
-//One is created for each of the four possible events (on, off, brightness up, brightness down)
+//One is created for each of the four possible events (on, off, toggle on/off, brightness up, brightness down)
 @interface DimListener : NSObject <LAListener> {
 	DimActivatorMode mode;
 }
@@ -48,6 +51,12 @@ typedef enum {
 		case kDisable:
 			[[DimController sharedInstance] setEnabled:NO];
 			break;
+		case kToggle:
+			if ([DimController sharedInstance].enabled)
+				[[DimController sharedInstance] setEnabled:NO];
+			else
+				[[DimController sharedInstance] setEnabled:YES];
+			break;
 		case kControlPanel:
 			[[DimController sharedInstance] showControlPanel];
 			break;
@@ -78,7 +87,7 @@ void dimShowControlCenter() {
 }
 
 %ctor {
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL,CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimShowControlCenter, CFSTR("com.thomasfinch.dim-controlPanel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -86,11 +95,18 @@ void dimShowControlCenter() {
 	[DimController sharedInstance]; //Initialize dim controller
 	
 	//Create all four activator listeners
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kEnable] forName:@"com.thomasfinch.dim-on"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kDisable] forName:@"com.thomasfinch.dim-off"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessUp] forName:@"com.thomasfinch.dim-up"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kBrightnessDown] forName:@"com.thomasfinch.dim-down"];
-	[LASharedActivator registerListener:[[DimListener alloc] initWithMode:kControlPanel] forName:@"com.thomasfinch.dim-controlPanel"];
-	[pool drain];
+	dlopen("/usr/lib/libactivator.dylib", RTLD_LAZY);
+	Class la = objc_getClass("LAActivator");
+	if (la) { //If activator is installed, set listeners
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kEnable] forName:@"com.thomasfinch.dim-on"];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kDisable] forName:@"com.thomasfinch.dim-off"];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kBrightnessUp] forName:@"com.thomasfinch.dim-up"];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kBrightnessDown] forName:@"com.thomasfinch.dim-down"];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kToggle] forName:@"com.thomasfinch.dim-toggle"];
+		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kControlPanel] forName:@"com.thomasfinch.dim-controlPanel"];
+		[pool drain];
+	}
+
+	NSLog(@"INITTED DIM!!!!!");
 }
