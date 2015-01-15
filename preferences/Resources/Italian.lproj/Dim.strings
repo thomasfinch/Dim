@@ -1,0 +1,13 @@
+"ENABLED" = "Attivato";
+"BRIGHTNESS" = "Luminosità";
+"ACTIVATOR_ACTIONS" = "Azioni Activator";
+"ACTIVATOR_FOOTER" = "Il pannello di controllo permette di attivare/disattivare velocemente Dim e modificare la luminosità. Il grado di variazione della luminosità è la quantità con cui la luminosità cambia quando si utilizzano le azioni aumenta/diminuisci. Dim può anche essere attivato e disattivato con il pulsante Flipswitch incluso.";
+"SHOW_CONTROL_PANEL" = "Mostra il pannello di controllo";
+"ENABLE" = "Attiva";
+"DISABLE" = "Disattiva";
+"TOGGLE" = "Alterna attiva/disattiva";
+"BRIGHTNESS_UP" = "Aumenta luminosità";
+"BRIGHTNESS_DOWN" = "Diminuisci luminosità";
+"BRIGHTNESS_CHANGE_INTERVAL" = "Grado di variazione della luminosità";
+"VIEW_ON_GITHUB" = "Visualizza il codice sorgente su GitHub";
+"DEVELOPED_BY" = "Sviluppato da @tomf64";
