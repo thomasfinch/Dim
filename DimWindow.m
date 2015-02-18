@@ -12,9 +12,8 @@
 	if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
 	    self.backgroundColor = [UIColor blackColor];
 
-	    #ifdef __IPHONE_8_0
-	    [self _setSecure:YES]; //Allows Dim on the lockscreen with a passcode (iOS 8 only)
-	    #endif
+	    if ([self respondsToSelector:@selector(_setSecure:)])
+	    	[self _setSecure:YES]; //Allows Dim on the lockscreen when a passcode is set (iOS 8 only)
 	}
 	return self;
 }

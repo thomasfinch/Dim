@@ -3,6 +3,7 @@
 @interface DimController : NSObject {
 	DimWindow *dimOverlay;
 	NSUserDefaults *prefs;
+	NSTimer *disableTimer;
 }
 
 @property (nonatomic) BOOL enabled;

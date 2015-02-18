@@ -1,5 +1,8 @@
 "ENABLED" = "Enabled";
 "BRIGHTNESS" = "Brightness";
+"AUTODISABLE" = "Automatically Disable";
+"TIME" = "Hours";
+"AUTODISABLE_FOOTER" = "Automatically disable dim after a set period of time. 0 means never automatically disable.";
 "ACTIVATOR_ACTIONS" = "Acivator Actions";
 "ACTIVATOR_FOOTER" = "The control panel allows you to quickly enable/disable Dim and change the brightness. Brightness change interval is the amount the brightness changes with the brightness up/down actions. Dim can also be enabled and disabled with the included Flipswitch toggle.";
 "SHOW_CONTROL_PANEL" = "Show Control Panel";

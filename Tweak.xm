@@ -81,15 +81,40 @@ void dimToggleOn() {
 	[[DimController sharedInstance] setEnabled:YES];
 }
 
+void dimToggleOnOff() {
+	[[DimController sharedInstance] setEnabled:![DimController sharedInstance].enabled];
+}
+
 //Called by the flipswitch toggle on long hold
 void dimShowControlCenter() {
 	[[DimController sharedInstance] showControlPanel];
 }
 
+//These hooks are used to disable Dim temporarily when a screenshot is taken
+//If these weren't here, Dim would make the screenshot dark.
+%hook SBScreenShotter
+
+- (void)saveScreenshot:(_Bool)arg1 {
+	[UIView animateWithDuration:0 animations:^{
+		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = YES;
+	} completion:^(BOOL finished){
+		%orig;
+	}];
+}
+
+- (void)finishedWritingScreenshot:(id)arg1 didFinishSavingWithError:(id)arg2 context:(void *)arg3 {
+	%orig;
+	if ([DimController sharedInstance].enabled)
+		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = NO;
+}
+
+%end
+
 %ctor {
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOn, CFSTR("com.thomasfinch.dim-on"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOff, CFSTR("com.thomasfinch.dim-off"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimToggleOnOff, CFSTR("com.thomasfinch.dim-toggle"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)dimShowControlCenter, CFSTR("com.thomasfinch.dim-controlPanel"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 
 	[DimController sharedInstance]; //Initialize dim controller
@@ -107,6 +132,4 @@ void dimShowControlCenter() {
 		[[la sharedInstance] registerListener:[[DimListener alloc] initWithMode:kControlPanel] forName:@"com.thomasfinch.dim-controlPanel"];
 		[pool drain];
 	}
-
-	NSLog(@"INITTED DIM!!!!!");
 }

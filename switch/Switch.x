@@ -13,21 +13,12 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 }
 
 - (FSSwitchState)stateForSwitchIdentifier:(NSString *)switchIdentifier {
+    //NSLog(@"DIM ENABLED: %d",(int)[[objc_getClass("DimController") performSelector:@selector(sharedInstance)] performSelector:@selector(enabled)]);
     return [[objc_getClass("DimController") performSelector:@selector(sharedInstance)] performSelector:@selector(enabled)] ? FSSwitchStateOn : FSSwitchStateOff;
 }
 
-- (void)applyState:(FSSwitchState)newState forSwitchIdentifier:(NSString *)switchIdentifier
-{
-    switch (newState) {
-    case FSSwitchStateIndeterminate:
-        break;
-    case FSSwitchStateOn:
-        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-on"), NULL, NULL, true);
-        break;
-    case FSSwitchStateOff:
-        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-off"), NULL, NULL, true);
-        break;
-    }
+- (void)applyState:(FSSwitchState)newState forSwitchIdentifier:(NSString *)switchIdentifier {
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-toggle"), NULL, NULL, true);
 }
 
 //Show the control panel when the toggle is held

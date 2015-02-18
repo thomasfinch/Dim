@@ -1,4 +1,5 @@
 #import "DimController.h"
+#import <objc/runtime.h>
 
 const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max darkness
 
@@ -19,14 +20,17 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 		[prefs registerDefaults:@{
 			@"enabled": @NO,
 			@"alpha": [NSNumber numberWithFloat:0.3],
-			@"alphaInterval": [NSNumber numberWithFloat:0.1]
+			@"alphaInterval": [NSNumber numberWithFloat:0.1],
+			@"autoDisableTime": [NSNumber numberWithInt:0]
 		}];
-		[prefs setBool:NO forKey:@"enabled"]; //Default to disabled when SpringBoard starts, regardless of the previous setting
 
 		_prefsChangedFromSettings = NO;
 		_enabled = [prefs boolForKey:@"enabled"];
 		_brightness = [prefs floatForKey:@"alpha"];
 		_alphaInterval = [prefs floatForKey:@"alphaInterval"];
+
+		if (_enabled)
+			[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(timerFired:) userInfo:[NSNumber numberWithBool:YES] repeats:NO];
 	}
 	return self;
 }
@@ -43,13 +47,20 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 		return;
 
 	_enabled = enabled;
-	if (!enabled && dimOverlay)
-		[dimOverlay release];
-	else if (enabled) {
+	if (enabled) {
 		dimOverlay = [[DimWindow alloc] init];
 		dimOverlay.windowLevel = 1000001; //Beat that ryan petrich
 	    dimOverlay.alpha = _brightness;
 	    dimOverlay.hidden = NO;
+
+	    //Set the auto-disable timer if it's enabled
+	    if ([prefs floatForKey:@"autoDisableTime"] != 0)
+	    	disableTimer = [NSTimer scheduledTimerWithTimeInterval:3600*[prefs floatForKey:@"autoDisableTime"] target:self selector:@selector(timerFired:) userInfo:[NSNumber numberWithBool:NO] repeats:NO];
+	}
+	else {
+		[disableTimer invalidate];
+		if (dimOverlay)
+			[dimOverlay release];
 	}
 
 	if (!_prefsChangedFromSettings)
@@ -103,6 +114,11 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 
 - (void)controlPanelSliderChanged:(UISlider*)slider {
 	[self setBrightness:1-slider.value];
+}
+
+- (void)timerFired:(NSTimer*)timer {
+	_enabled = ![timer.userInfo boolValue];
+	[self setEnabled:[timer.userInfo boolValue]];
 }
 
 @end
