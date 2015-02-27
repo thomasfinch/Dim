@@ -28,21 +28,6 @@ items = (
   },
   {
     cell = PSGroupCell;
-    label = "AUTODISABLE";
-    footerText = "AUTODISABLE_FOOTER";
-  },
-  {
-    cell = PSEditTextCell;
-    defaults = "com.thomasfinch.dim";
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    key = autoDisableTime;
-    label = "TIME";
-    default = 0;
-    isIP = 1;
-    placeholder = "0";
-  },
-  {
-    cell = PSGroupCell;
     label = "ACTIVATOR_ACTIONS";
     footerText = "ACTIVATOR_FOOTER";
   },

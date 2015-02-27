@@ -90,25 +90,25 @@ void dimShowControlCenter() {
 	[[DimController sharedInstance] showControlPanel];
 }
 
-//These hooks are used to disable Dim temporarily when a screenshot is taken
-//If these weren't here, Dim would make the screenshot dark.
-%hook SBScreenShotter
+// //These hooks are used to disable Dim temporarily when a screenshot is taken
+// //If these weren't here, Dim would make the screenshot dark.
+// %hook SBScreenShotter
 
-- (void)saveScreenshot:(_Bool)arg1 {
-	[UIView animateWithDuration:0 animations:^{
-		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = YES;
-	} completion:^(BOOL finished){
-		%orig;
-	}];
-}
+// - (void)saveScreenshot:(_Bool)arg1 {
+// 	[UIView animateWithDuration:0 animations:^{
+// 		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = YES;
+// 	} completion:^(BOOL finished){
+// 		%orig;
+// 	}];
+// }
 
-- (void)finishedWritingScreenshot:(id)arg1 didFinishSavingWithError:(id)arg2 context:(void *)arg3 {
-	%orig;
-	if ([DimController sharedInstance].enabled)
-		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = NO;
-}
+// - (void)finishedWritingScreenshot:(id)arg1 didFinishSavingWithError:(id)arg2 context:(void *)arg3 {
+// 	%orig;
+// 	if ([DimController sharedInstance].enabled)
+// 		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = NO;
+// }
 
-%end
+// %end
 
 %ctor {
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);

@@ -1,6 +1,6 @@
 ARCHS = armv7 arm64
 THEOS_PACKAGE_DIR_NAME = debs
-PACKAGE_VERSION = 1.3.3
+PACKAGE_VERSION = 1.3.4
 
 include theos/makefiles/common.mk
 
@@ -15,4 +15,4 @@ SUBPROJECTS += preferences
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
 after-install::
-	install.exec "killall -9 backboardd"
+	install.exec "killall -9 SpringBoard"

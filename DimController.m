@@ -21,16 +21,12 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 			@"enabled": @NO,
 			@"alpha": [NSNumber numberWithFloat:0.3],
 			@"alphaInterval": [NSNumber numberWithFloat:0.1],
-			@"autoDisableTime": [NSNumber numberWithInt:0]
 		}];
 
 		_prefsChangedFromSettings = NO;
-		_enabled = [prefs boolForKey:@"enabled"];
+		_enabled = NO;
 		_brightness = [prefs floatForKey:@"alpha"];
 		_alphaInterval = [prefs floatForKey:@"alphaInterval"];
-
-		if (_enabled)
-			[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(timerFired:) userInfo:[NSNumber numberWithBool:YES] repeats:NO];
 	}
 	return self;
 }
@@ -52,13 +48,8 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 		dimOverlay.windowLevel = 1000001; //Beat that ryan petrich
 	    dimOverlay.alpha = _brightness;
 	    dimOverlay.hidden = NO;
-
-	    //Set the auto-disable timer if it's enabled
-	    if ([prefs floatForKey:@"autoDisableTime"] != 0)
-	    	disableTimer = [NSTimer scheduledTimerWithTimeInterval:3600*[prefs floatForKey:@"autoDisableTime"] target:self selector:@selector(timerFired:) userInfo:[NSNumber numberWithBool:NO] repeats:NO];
 	}
 	else {
-		[disableTimer invalidate];
 		if (dimOverlay)
 			[dimOverlay release];
 	}
@@ -96,7 +87,6 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 	[enabledSwitch addTarget:self action:@selector(controlPanelSwitchChanged:) forControlEvents:UIControlEventValueChanged];
 	[containerView addSubview:enabledSwitch];
 
-
 	UISlider *brightnessSlider = [[UISlider alloc] initWithFrame:CGRectMake(15, 65, containerView.frame.size.width-30, 30)];
 	brightnessSlider.minimumValue = 0.0;
 	brightnessSlider.maximumValue = 1.0;
@@ -114,11 +104,6 @@ const CGFloat MAX_ALPHA = 0.9; //So the user can see their screen, even at max d
 
 - (void)controlPanelSliderChanged:(UISlider*)slider {
 	[self setBrightness:1-slider.value];
-}
-
-- (void)timerFired:(NSTimer*)timer {
-	_enabled = ![timer.userInfo boolValue];
-	[self setEnabled:[timer.userInfo boolValue]];
 }
 
 @end
