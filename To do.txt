@@ -3,6 +3,7 @@ Fixes
 
 New Features:
 	Disable temporarily when a screenshot is taken so it doesn't darken the screenshot
+	Integrate into system brightness like Dimmer
 
 Changelog
 ---------
