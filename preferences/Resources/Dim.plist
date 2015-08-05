@@ -18,9 +18,9 @@ items = (
   {
     cell = PSSliderCell;
     PostNotification = com.thomasfinch.dim-prefschanged;
-    default = 0.3;
+    default = 0.5;
     defaults = "com.thomasfinch.dim";
-    key = alpha;
+    key = brightness;
     max = 1;
     min = 0;
     showValue = true;
@@ -94,6 +94,7 @@ items = (
   },
   {
     cell = PSGroupCell;
+    footerText = "© 2015 Thomas Finch";
   },
   {
     cell = PSButtonCell;
@@ -106,9 +107,5 @@ items = (
     action = TFTwitterButtonTapped;
     icon = "Twitter.png";
     label = "DEVELOPED_BY";
-  },
-  {
-    cell = PSGroupCell;
-    footerText = "© 2014 Thomas Finch";
   }
 );

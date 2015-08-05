@@ -1,7 +1,11 @@
 #import <Flipswitch/Flipswitch.h>
-#import <objc/runtime.h>
 
-extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
+@interface DimController : NSObject
+@property (nonatomic) BOOL enabled;
++ (DimController*)sharedInstance;
+- (void)showControlPanel;
+@end
+
 
 @interface DimSwitch : NSObject <FSSwitchDataSource>
 @end
@@ -13,17 +17,16 @@ extern CFNotificationCenterRef CFNotificationCenterGetDistributedCenter(void);
 }
 
 - (FSSwitchState)stateForSwitchIdentifier:(NSString *)switchIdentifier {
-    //NSLog(@"DIM ENABLED: %d",(int)[[objc_getClass("DimController") performSelector:@selector(sharedInstance)] performSelector:@selector(enabled)]);
-    return [[objc_getClass("DimController") performSelector:@selector(sharedInstance)] performSelector:@selector(enabled)] ? FSSwitchStateOn : FSSwitchStateOff;
+    return [%c(DimController) sharedInstance].enabled ? FSSwitchStateOn : FSSwitchStateOff;
 }
 
 - (void)applyState:(FSSwitchState)newState forSwitchIdentifier:(NSString *)switchIdentifier {
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-toggle"), NULL, NULL, true);
+	[%c(DimController) sharedInstance].enabled = ![%c(DimController) sharedInstance].enabled;
 }
 
 //Show the control panel when the toggle is held
 - (void)applyAlternateActionForSwitchIdentifier:(NSString *)switchIdentifier {
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.thomasfinch.dim-controlPanel"), NULL, NULL, true);
+    [[%c(DimController) sharedInstance] showControlPanel];
 }
 
 @end

@@ -102,7 +102,7 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event {
-	[event setHandled:YES]; // To prevent the default iOS action
+	[event setHandled:YES]; // To prevent the default iOS implementation
 
 	NSString *eventName = [activator assignedListenerNameForEvent:event];
 

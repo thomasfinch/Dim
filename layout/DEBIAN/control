@@ -1,7 +1,7 @@
 Package: com.thomasfinch.dim
 Name: Dim
 Depends: mobilesubstrate, preferenceloader
-Version: 1.3.5
+Version: 1.4
 Architecture: iphoneos-arm
 Description: Dim your screen even further!
 Maintainer: Thomas Finch <tomf64@gmail.com>

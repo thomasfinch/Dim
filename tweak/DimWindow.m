@@ -7,6 +7,9 @@
 - (DimWindow *)init {
 	if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
 	    self.backgroundColor = [UIColor blackColor];
+	    self.windowLevel = 1000001;
+	    self.alpha = 0.45;
+	    self.hidden = YES;
 
 	    if ([self respondsToSelector:@selector(_setSecure:)])
 	    	[self _setSecure:YES]; //Allows Dim on the lockscreen when a passcode is set (iOS 8 only)
@@ -14,8 +17,7 @@
 	return self;
 }
 
-//Prevents touches from interacting with this window
-//	(we want them to go through)
+//Prevents touches from being blocked by the window
 - (BOOL)_ignoresHitTest {
 	return YES;
 }
