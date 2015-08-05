@@ -1,5 +1,10 @@
-Fix flipswitch not always reflecting enabled status (Should work idk why not? Maybe track state as bool in switch, use darwin notification callback when enabled changes to change it)
-Fix screen going completely black in some cases
+Fixes
+	Fix screen going completely black in some cases
 
-Changes since last version:
-Now disables itself temporarily when a screenshot is taken so it doesn't darken the screenshot
+New Features:
+	Disable temporarily when a screenshot is taken so it doesn't darken the screenshot
+
+Changelog
+---------
+1.4:
+	Major rewrite, everything is much cleaner
