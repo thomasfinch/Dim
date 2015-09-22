@@ -106,8 +106,6 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 
 	NSString *eventName = [activator assignedListenerNameForEvent:event];
 
-	NSLog(@"RECIEVED ACTIVATOR EVENT: %@", eventName);
-
 	if ([eventName isEqualToString:@"com.thomasfinch.dim-on"]) {
 		self.enabled = YES;
 	}
