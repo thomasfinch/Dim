@@ -5,7 +5,15 @@
 @implementation DimWindow
 
 - (DimWindow *)init {
-	if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
+    
+    if( [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f ){
+        self = [super init];
+    }
+    else{
+        self = [super initWithFrame:[UIScreen mainScreen].bounds];
+    }
+    
+	if (self) {
 	    self.backgroundColor = [UIColor blackColor];
 	    self.windowLevel = 1000001;
 	    self.alpha = 0.45;
