@@ -7,11 +7,11 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 
 + (DimController*)sharedInstance {
 	static dispatch_once_t p = 0;
-    __strong static id _sharedObject = nil;
+    __strong static DimController* sharedObject = nil;
     dispatch_once(&p, ^{
-        _sharedObject = [[self alloc] init];
+        sharedObject = [[self alloc] init];
     });
-    return _sharedObject;
+    return sharedObject;
 }
 
 - (id)init {
@@ -56,7 +56,6 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)setBrightness:(float)b {
-	NSLog(@"SET BRIGHTNESS CALLED: %f", b);
 	if (b >= 0 && b <= 1) {
 		dimWindow.alpha = [self alphaForBrightness:b];
 		[prefs setFloat:b forKey:@"brightness"];

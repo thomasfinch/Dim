@@ -1,8 +1,8 @@
 ARCHS = armv7 arm64
 THEOS_PACKAGE_DIR_NAME = debs
-# PACKAGE_VERSION = 1.4
+PACKAGE_VERSION = 1.4
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 SOURCE_FILES=$(wildcard tweak/*.m tweak/*.mm tweak/*.x tweak/*.xm)
 

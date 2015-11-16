@@ -11,8 +11,9 @@
 	    self.alpha = 0.45;
 	    self.hidden = YES;
 
+	    //Allows Dim on the lockscreen when a passcode is set (iOS 8+)
 	    if ([self respondsToSelector:@selector(_setSecure:)])
-	    	[self _setSecure:YES]; //Allows Dim on the lockscreen when a passcode is set (iOS 8 only)
+	    	[self _setSecure:YES];
 	}
 	return self;
 }
