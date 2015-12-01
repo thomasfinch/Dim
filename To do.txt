@@ -1,13 +1,15 @@
 Fixes
 	Fix screen going completely black in some cases
-	Fix window not rotating properly sometimes
 
 New Features:
-	Disable temporarily when a screenshot is taken so it doesn't darken the screenshot
 	Integrate into system brightness like Dimmer
 	Option to allow complete blackness?
 
 Changelog
 ---------
+1.5:
+	Doesn't dim screenshots
+	Added preference to either show control panel or go to preferences when flipswitch is long pressed
+
 1.4:
 	Major rewrite, everything is much cleaner

@@ -1,39 +1,48 @@
 #import <libactivator/libactivator.h>
-#include <dlfcn.h>
+#import <dlfcn.h>
 #import <objc/runtime.h>
+#import "substrate.h"
 #import "DimController.h"
+
+BOOL enabledBeforeScreenshot = NO;
 
 //Called when any preference is changed in the settings pane
 void prefsChanged() {
 	[[DimController sharedInstance] updateFromPreferences];
 }
 
-// //These hooks are used to disable Dim temporarily when a screenshot is taken
-// //If these weren't here, Dim would make the screenshot dark.
-// %hook SBScreenShotter
+//These hooks are used to disable Dim temporarily when a screenshot is taken
+//If these weren't here, Dim would make the screenshot dark.
+%hook SBScreenShotter
 
-// - (void)saveScreenshot:(_Bool)arg1 {
-// 	[UIView animateWithDuration:0 animations:^{
-// 		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = YES;
-// 	} completion:^(BOOL finished){
-// 		%orig;
-// 	}];
-// }
+- (void)saveScreenshot:(_Bool)arg1 {
+	enabledBeforeScreenshot = [DimController sharedInstance].enabled;
+	if (enabledBeforeScreenshot) {
+		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimWindow").hidden = YES;
+	}
 
-// - (void)finishedWritingScreenshot:(id)arg1 didFinishSavingWithError:(id)arg2 context:(void *)arg3 {
-// 	%orig;
-// 	if ([DimController sharedInstance].enabled)
-// 		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimOverlay").hidden = NO;
-// }
+	//Give the window a small amount of time to disappear before taking the screenshot
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		%orig;
+	});
+}
 
-// %end
+- (void)finishedWritingScreenshot:(id)arg1 didFinishSavingWithError:(id)arg2 context:(void *)arg3 {
+	%orig;
+
+	if (enabledBeforeScreenshot) {
+		MSHookIvar<UIWindow*>([DimController sharedInstance], "dimWindow").hidden = NO;
+	}
+}
+
+%end
 
 %ctor {
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)prefsChanged, CFSTR("com.thomasfinch.dim-prefschanged"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 
 	[DimController sharedInstance]; //Initialize dim controller
 	
-	//Set up ativator listeners if it's installed
+	//Set up Activator listeners if it's installed
 	dlopen("/usr/lib/libactivator.dylib", RTLD_LAZY);
 	Class la = objc_getClass("LAActivator");
 	if (la) {

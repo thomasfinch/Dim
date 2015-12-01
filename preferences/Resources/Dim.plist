@@ -28,6 +28,27 @@ items = (
   },
   {
     cell = PSGroupCell;
+    label = "FLIPSWITCH";
+  },
+  {
+    cell = PSLinkListCell;
+    detail = PSListItemsController;
+    default = 0;
+    defaults = "com.thomasfinch.dim";
+    key = flipswitchHoldAction;
+    PostNotification = com.thomasfinch.dim-prefschanged;
+    label = "Long Press";
+    validValues = (
+      0,
+      1
+    );
+    validTitles = (
+      "Show Control Panel",
+      "Go To Preferences"
+    );
+  },
+  {
+    cell = PSGroupCell;
     label = "ACTIVATOR_ACTIONS";
     footerText = "ACTIVATOR_FOOTER";
   },

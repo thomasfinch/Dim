@@ -21,6 +21,7 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 			@"enabled": @NO,
 			@"brightness": [NSNumber numberWithFloat:0.5],
 			@"alphaInterval": [NSNumber numberWithFloat:0.1],
+			@"flipswitchHoldAction": [NSNumber numberWithInt:0]
 		}];
 
 		//Needed because making the window in the init method doesn't create
@@ -37,16 +38,11 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)updateFromPreferences {
-	NSLog(@"DIM CONTROLLER UPDATE FROM PREFERENCES");
 	dimWindow.hidden = ![prefs boolForKey:@"enabled"];
-	NSLog(@"CURRENT PREFS BRIGHTNESS: %f", [prefs floatForKey:@"brightness"]);
-	NSLog(@"ALPHA FOR BRIGHTNESS: %f", [self alphaForBrightness:[prefs floatForKey:@"brightness"]]);
 	dimWindow.alpha = [self alphaForBrightness:[prefs floatForKey:@"brightness"]];
-
 }
 
 - (void)setEnabled:(BOOL)e {
-	NSLog(@"SET ENABLED CALLED: %d", e);
 	dimWindow.hidden = !e;
 	[prefs setBool:e forKey:@"enabled"];
 }
@@ -56,10 +52,13 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)setBrightness:(float)b {
-	if (b >= 0 && b <= 1) {
-		dimWindow.alpha = [self alphaForBrightness:b];
-		[prefs setFloat:b forKey:@"brightness"];
-	}
+	if (b > 1)
+		b = 1;
+	else if (b < 0)
+		b = 0;
+
+	dimWindow.alpha = [self alphaForBrightness:b];
+	[prefs setFloat:b forKey:@"brightness"];
 }
 
 - (float)brightness {

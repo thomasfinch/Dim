@@ -1,13 +1,10 @@
 ARCHS = armv7 arm64
 THEOS_PACKAGE_DIR_NAME = debs
-PACKAGE_VERSION = 1.4
 
 include $(THEOS)/makefiles/common.mk
 
-SOURCE_FILES=$(wildcard tweak/*.m tweak/*.mm tweak/*.x tweak/*.xm)
-
 TWEAK_NAME = Dim
-Dim_FILES = $(SOURCE_FILES)
+Dim_FILES = $(wildcard tweak/*.m tweak/*.mm tweak/*.x tweak/*.xm)
 Dim_FRAMEWORKS = UIKit
 
 include $(THEOS_MAKE_PATH)/tweak.mk
