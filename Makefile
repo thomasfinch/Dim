@@ -1,4 +1,5 @@
 ARCHS = armv7 arm64
+TARGET_IPHONEOS_DEPLOYMENT_VERSION = 7.0
 THEOS_PACKAGE_DIR_NAME = debs
 
 include $(THEOS)/makefiles/common.mk

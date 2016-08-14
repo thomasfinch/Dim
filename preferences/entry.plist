@@ -1,10 +1,10 @@
 {
-    entry = {
-	bundle = Dim;
-	cell = PSLinkCell;
-	detail = DimListController;
-	icon = Dim.png;
-	isController = 1;
-	label = Dim;
-    };
+	entry = {
+		bundle = Dim;
+		cell = PSLinkCell;
+		detail = DimListController;
+		icon = Dim.png;
+		isController = 1;
+		label = "Dim";
+	};
 }

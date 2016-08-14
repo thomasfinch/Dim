@@ -5,23 +5,22 @@
 @implementation DimWindow
 
 - (DimWindow *)init {
-    
-    if( [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f ){
-        self = [super init];
-    }
-    else{
-        self = [super initWithFrame:[UIScreen mainScreen].bounds];
-    }
-    
+	if( [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f ){
+		self = [super init];
+	}
+	else {
+		self = [super initWithFrame:[UIScreen mainScreen].bounds];
+	}
+	
 	if (self) {
-	    self.backgroundColor = [UIColor blackColor];
-	    self.windowLevel = 1000001;
-	    self.alpha = 0.45;
-	    self.hidden = YES;
+		self.backgroundColor = [UIColor blackColor];
+		self.windowLevel = 1000001;
+		self.alpha = 0.45;
+		self.hidden = YES;
 
-	    //Allows Dim on the lockscreen when a passcode is set (iOS 8+)
-	    if ([self respondsToSelector:@selector(_setSecure:)])
-	    	[self _setSecure:YES];
+		//Allows Dim on the lockscreen when a passcode is set (iOS 8+)
+		if ([self respondsToSelector:@selector(_setSecure:)])
+			[self _setSecure:YES];
 	}
 	return self;
 }

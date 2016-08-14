@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Dim</string>
+	<string>DimSwitch</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.thomasfinch.dim</string>
 	<key>CFBundleDisplayName</key>

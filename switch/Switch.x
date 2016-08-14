@@ -9,7 +9,7 @@
 
 @interface DimSwitch : NSObject <FSSwitchDataSource>
 @end
-
+ 
 @implementation DimSwitch
 
 - (NSString *)titleForSwitchIdentifier:(NSString *)switchIdentifier {

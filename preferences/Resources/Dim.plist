@@ -1,132 +1,130 @@
 title = "Dim";
 items = (
-  {
-    cell = PSGroupCell;
-  },
-  {
-    cell = PSSwitchCell;
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    default = 1;
-    defaults = "com.thomasfinch.dim";
-    key = enabled;
-    label = "ENABLED";
-  },
-  {
-    cell = PSGroupCell;
-    label = "BRIGHTNESS";
-  },
-  {
-    cell = PSSliderCell;
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    default = 0.5;
-    defaults = "com.thomasfinch.dim";
-    key = brightness;
-    max = 1;
-    min = 0;
-    showValue = true;
-    leftImage = Brightness.png;
-  },
-  {
-    cell = PSGroupCell;
-    label = "FLIPSWITCH";
-  },
-  {
-    cell = PSLinkListCell;
-    detail = PSListItemsController;
-    default = 0;
-    defaults = "com.thomasfinch.dim";
-    key = flipswitchHoldAction;
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    label = "Long Press";
-    validValues = (
-      0,
-      1
-    );
-    validTitles = (
-      "Show Control Panel",
-      "Go To Preferences"
-    );
-  },
-  {
-    cell = PSGroupCell;
-    label = "ACTIVATOR_ACTIONS";
-    footerText = "ACTIVATOR_FOOTER";
-  },
-  {
-    cell = PSLinkListCell;
-    label = "SHOW_CONTROL_PANEL";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-controlPanel;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "ENABLE";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-on;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "DISABLE";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-off;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "TOGGLE";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-toggle;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "BRIGHTNESS_UP";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-up;
-  },
-  {
-    cell = PSLinkListCell;
-    label = "BRIGHTNESS_DOWN";
-    isController = true;
-    bundle = LibActivator;
-    activatorListener = com.thomasfinch.dim-down;
-  },
-  {
-    cell = PSLinkListCell;
-    PostNotification = com.thomasfinch.dim-prefschanged;
-    detail = PSListItemsController;
-    default = 0.1;
-    defaults = "com.thomasfinch.dim";
-    key = alphaInterval;
-    label = "BRIGHTNESS_CHANGE_INTERVAL";
-    validValues = (
-      0.05,
-      0.1,
-      0.2,
-    );
-    validTitles = (
-      "0.05",
-      "0.1",
-      "0.2",
-    );
-  },
-  {
-    cell = PSGroupCell;
-    footerText = "© 2015 Thomas Finch";
-  },
-  {
-    cell = PSButtonCell;
-    action = GithubButtonTapped;
-    icon = "Github.png";
-    label = "VIEW_ON_GITHUB";
-  },
-  {
-    cell = PSButtonCell;
-    action = TFTwitterButtonTapped;
-    icon = "Twitter.png";
-    label = "DEVELOPED_BY";
-  }
+	{
+		cell = PSGroupCell;
+	},
+	{
+		cell = PSSwitchCell;
+		PostNotification = com.thomasfinch.dim-prefschanged;
+		default = 1;
+		defaults = "com.thomasfinch.dim";
+		key = enabled;
+		label = "ENABLED";
+	},
+	{
+		cell = PSGroupCell;
+		label = "BRIGHTNESS";
+	},
+	{
+		cell = PSSliderCell;
+		PostNotification = com.thomasfinch.dim-prefschanged;
+		default = 0.5;
+		defaults = "com.thomasfinch.dim";
+		key = brightness;
+		max = 1;
+		min = 0;
+		leftImage = Brightness.png;
+	},
+	{
+		cell = PSGroupCell;
+		label = "Flipswitch Long Press";
+	},
+	{
+		cell = PSSegmentCell;
+		default = 0;
+		defaults = "com.thomasfinch.dim";
+		key = flipswitchHoldAction;
+		PostNotification = com.thomasfinch.dim-prefschanged;
+		label = "Long Press";
+		validValues = (
+			0,
+			1
+		);
+		validTitles = (
+			"Control Panel",
+			"Preferences"
+		);
+	},
+	{
+		cell = PSGroupCell;
+		label = "ACTIVATOR_ACTIONS";
+		footerText = "ACTIVATOR_FOOTER";
+	},
+	{
+		cell = PSLinkListCell;
+		label = "SHOW_CONTROL_PANEL";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-controlPanel;
+	},
+	{
+		cell = PSLinkListCell;
+		label = "ENABLE";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-on;
+	},
+	{
+		cell = PSLinkListCell;
+		label = "DISABLE";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-off;
+	},
+	{
+		cell = PSLinkListCell;
+		label = "TOGGLE";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-toggle;
+	},
+	{
+		cell = PSLinkListCell;
+		label = "BRIGHTNESS_UP";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-up;
+	},
+	{
+		cell = PSLinkListCell;
+		label = "BRIGHTNESS_DOWN";
+		isController = true;
+		bundle = LibActivator;
+		activatorListener = com.thomasfinch.dim-down;
+	},
+	{
+		cell = PSLinkListCell;
+		PostNotification = com.thomasfinch.dim-prefschanged;
+		detail = PSListItemsController;
+		default = 0.1;
+		defaults = "com.thomasfinch.dim";
+		key = alphaInterval;
+		label = "BRIGHTNESS_CHANGE_INTERVAL";
+		validValues = (
+			0.05,
+			0.1,
+			0.2,
+		);
+		validTitles = (
+			"5%",
+			"10%",
+			"20%",
+		);
+	},
+	{
+		cell = PSGroupCell;
+		footerText = "© 2015 Thomas Finch";
+	},
+	{
+		cell = PSButtonCell;
+		action = TFTwitterButtonTapped;
+		icon = "Twitter.png";
+		label = "DEVELOPED_BY";
+	},
+	{
+		cell = PSButtonCell;
+		action = GithubButtonTapped;
+		icon = "Github.png";
+		label = "VIEW_ON_GITHUB";
+	}
 );

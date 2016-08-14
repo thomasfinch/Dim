@@ -23,14 +23,19 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 			@"alphaInterval": [NSNumber numberWithFloat:0.1],
 			@"flipswitchHoldAction": [NSNumber numberWithInt:0]
 		}];
-
-		//Needed because making the window in the init method doesn't create
-		//a working window, probably because it happens before SB fully loads
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-			dimWindow = [[DimWindow alloc] init];
-		});
 	}
 	return self;
+}
+
+// Used for lazy initialization of the window.
+// If the window is loaded too quickly as SpringBoard is launching, it won't appear.
+// Also, this fixes a bug causing a respring after using the 9.3.3 jailbreak
+- (DimWindow*)window {
+	static DimWindow* dimWindow = nil;
+	if (!dimWindow) {
+		dimWindow = [[DimWindow alloc] init];
+	}
+	return dimWindow;
 }
 
 - (float)alphaForBrightness:(float)b {
@@ -38,17 +43,17 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)updateFromPreferences {
-	dimWindow.hidden = ![prefs boolForKey:@"enabled"];
-	dimWindow.alpha = [self alphaForBrightness:[prefs floatForKey:@"brightness"]];
+	[self window].hidden = ![prefs boolForKey:@"enabled"];
+	[self window].alpha = [self alphaForBrightness:[prefs floatForKey:@"brightness"]];
 }
 
 - (void)setEnabled:(BOOL)e {
-	dimWindow.hidden = !e;
+	[self window].hidden = !e;
 	[prefs setBool:e forKey:@"enabled"];
 }
 
 - (BOOL)enabled {
-	return !dimWindow.hidden;
+	return ![self window].hidden;
 }
 
 - (void)setBrightness:(float)b {
@@ -57,12 +62,12 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 	else if (b < 0)
 		b = 0;
 
-	dimWindow.alpha = [self alphaForBrightness:b];
+	[self window].alpha = [self alphaForBrightness:b];
 	[prefs setFloat:b forKey:@"brightness"];
 }
 
 - (float)brightness {
-	return 1 - (dimWindow.alpha / MAX_ALPHA);
+	return 1 - ([self window].alpha / MAX_ALPHA);
 }
 
 - (void)showControlPanel {
@@ -100,7 +105,7 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
 }
 
 - (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event {
-	[event setHandled:YES]; // To prevent the default iOS implementation
+	[event setHandled:YES]; // To prevent the default iOS action
 
 	NSString *eventName = [activator assignedListenerNameForEvent:event];
 

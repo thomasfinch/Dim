@@ -2,7 +2,6 @@
 #import <libactivator/libactivator.h>
 
 @interface DimController : NSObject <LAListener> {
-	DimWindow *dimWindow;
 	NSUserDefaults *prefs;
 }
 
@@ -10,6 +9,7 @@
 @property (nonatomic) float brightness;
 
 + (DimController*)sharedInstance;
+- (DimWindow*)window;
 - (void)updateFromPreferences;
 - (void)showControlPanel;
 

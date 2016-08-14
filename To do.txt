@@ -7,6 +7,10 @@ New Features:
 
 Changelog
 ---------
+1.5.1:
+	Fix crash on re-jailbreak with 9.3.3 JB (changed window to be lazy init)
+	Minor settings changes (got rid of brightness slider value, changed flipswitch long press to a segment cell, reordered github and twitter buttons)
+
 1.5:
 	Doesn't dim screenshots
 	Added preference to either show control panel or go to preferences when flipswitch is long pressed

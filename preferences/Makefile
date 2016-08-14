@@ -1,6 +1,7 @@
 ARCHS = armv7 arm64
+TARGET_IPHONEOS_DEPLOYMENT_VERSION = 7.0
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = Dim
 Dim_FILES = Dim.mm
