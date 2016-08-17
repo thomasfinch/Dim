@@ -28,7 +28,6 @@
 }
 
 - (id)specifiers {
-	NSLog(@"DIM TRYING TO LOAD SPECIFIERS");
 	if(_specifiers == nil) {
 		_specifiers = [[self loadSpecifiersFromPlistName:@"Dim" target:self] retain];
 	}

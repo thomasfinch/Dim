@@ -7,6 +7,9 @@ New Features:
 
 Changelog
 ---------
+1.5.2:
+	Fix bug where screenshots would be darkened on 9.3+
+	
 1.5.1:
 	Fix crash on re-jailbreak with 9.3.3 JB (changed window to be lazy init)
 	Minor settings changes (got rid of brightness slider value, changed flipswitch long press to a segment cell, reordered github and twitter buttons)
