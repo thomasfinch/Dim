@@ -43,6 +43,16 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
     return (1 - b) * MAX_ALPHA; //alpha = 1 means fully opaque (fully dark)
 }
 
+- (void)showWindow:(UILongPressGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        
+        self.enabled = !self.enabled;
+    
+    } else if (sender.state == UIGestureRecognizerStateEnded) {
+        // Do nothing
+    }
+}
+
 - (void)updateFromPreferences {
     [self window].hidden = ![prefs boolForKey:@"enabled"];
     [self window].alpha = [self alphaForBrightness:[prefs floatForKey:@"brightness"]];
@@ -100,16 +110,7 @@ const CGFloat MAX_ALPHA = 0.8; //So the user can see their screen, even at max d
     [containerView addSubview:brightnessSlider];
     
     // [UIAlert show] is deprecated
-    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    if([rootViewController isKindOfClass:[UINavigationController class]])
-    {
-        rootViewController = ((UINavigationController *)rootViewController).viewControllers.firstObject;
-    }
-    if([rootViewController isKindOfClass:[UITabBarController class]])
-    {
-        rootViewController = ((UITabBarController *)rootViewController).selectedViewController;
-    }
-    [rootViewController presentViewController:controlPanel animated:YES completion:nil];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:controlPanel animated:YES completion:nil];
 }
 
 - (void)controlPanelSwitchChanged:(UISwitch*)enableSwitch {

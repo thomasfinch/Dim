@@ -13,8 +13,7 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += switch
 SUBPROJECTS += preferences
 include $(THEOS_MAKE_PATH)/aggregate.mk
-DEBUG=1
-FINALPACKAGE=0
+
 
 after-install::
 	install.exec "killall -9 SpringBoard"

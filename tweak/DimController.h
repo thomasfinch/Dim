@@ -12,5 +12,5 @@
 - (DimWindow*)window;
 - (void)updateFromPreferences;
 - (void)showControlPanel;
-
+- (void)showWindow:(UILongPressGestureRecognizer *)sender;
 @end

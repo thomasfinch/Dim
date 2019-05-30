@@ -3,6 +3,8 @@
 #import <objc/runtime.h>
 #import "substrate.h"
 #import "DimController.h"
+#import "DimWindow.h"
+
 
 BOOL enabledBeforeScreenshot = NO;
 
@@ -55,6 +57,38 @@ BOOL enabledBeforeScreenshot = NO;
 }
 
 %end
+
+
+%hook UIWindow
+- (BOOL)_shouldCreateContextAsSecure {
+    return [self isKindOfClass:%c(DimWindow)] ? YES : %orig;
+}
+- (id)initWithFrame:(CGRect)frame {
+    self = %orig(frame);
+    
+    id dim = [DimController sharedInstance];
+    SEL show = @selector(showWindow:);
+    
+    UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:dim action:show];
+    tap.minimumPressDuration = .5;
+    tap.numberOfTouchesRequired = 3;
+    
+    [self addGestureRecognizer:tap];
+ 
+    return self;
+}
+%end 
+
+%hook UIStatusBarWindow
+- (id)initWithFrame:(CGRect)frame {
+    self = %orig;
+
+    [self addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:DimController.sharedInstance action: @selector(showWindow:)]];
+    return self;
+}
+%end
+
+
 
 //Called when any preference is changed in the settings pane
 void prefsChanged() {
