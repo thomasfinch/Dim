@@ -1,6 +1,7 @@
-ARCHS = armv7 arm64
-TARGET_IPHONEOS_DEPLOYMENT_VERSION = 7.0
+ARCHS = armv7 armv7s arm64 arm64e
+TARGET=iphone:clang:11.2:10.0
 THEOS_PACKAGE_DIR_NAME = debs
+
 
 include $(THEOS)/makefiles/common.mk
 
@@ -12,6 +13,8 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 SUBPROJECTS += switch
 SUBPROJECTS += preferences
 include $(THEOS_MAKE_PATH)/aggregate.mk
+DEBUG=1
+FINALPACKAGE=0
 
 after-install::
 	install.exec "killall -9 SpringBoard"

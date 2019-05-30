@@ -1,5 +1,5 @@
-ARCHS = armv7 arm64
-TARGET_IPHONEOS_DEPLOYMENT_VERSION = 7.0
+ARCHS = armv7 armv7s arm64 arm64e
+TARGET = iphone:10.2:10.2
 
 include $(THEOS)/makefiles/common.mk
 
